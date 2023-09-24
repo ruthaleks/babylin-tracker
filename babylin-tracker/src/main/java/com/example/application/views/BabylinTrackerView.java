@@ -6,11 +6,12 @@ import com.example.application.EventType;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
 import java.time.LocalDateTime;
 
 
-@Route("")
+@Route(value = "/log", layout = MainLayout.class)
 public class BabylinTrackerView extends VerticalLayout {
 
     private BabylinTrackerRepo repo;
