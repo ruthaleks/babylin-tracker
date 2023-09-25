@@ -14,13 +14,8 @@ public class HistoryView extends VerticalLayout {
     public HistoryView(BabylinTrackerRepo repo) {
         this.repo = repo;
         var history = new VerticalLayout();
-        var button = new Button("Tillbaka");
-
-        button.addClickListener(click -> button.getUI().ifPresent(ui -> ui.navigate("/log")));
-
         repo.findAll().forEach(record -> history.add(createHistoryField(record)));
         add(
-                button,
                 history
         );
     }

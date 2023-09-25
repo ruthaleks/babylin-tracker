@@ -25,7 +25,6 @@ public class MainLayout extends AppLayout {
         addToDrawer(header, scroller);
         addToNavbar(true, toggle);
 
-
     }
 
     private SideNav createNavigationMenu() {

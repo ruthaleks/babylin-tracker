@@ -37,8 +37,6 @@ public class BabylinTrackerView extends VerticalLayout {
     private void addButtonClickListener(Button button, EventType eventType){
         button.addClickListener(click -> {
             repo.save(new BabylinTracker(eventType, LocalDateTime.now()));
-            getUI().ifPresent((ui -> ui.navigate("/history")));
-
         });
     }
 
