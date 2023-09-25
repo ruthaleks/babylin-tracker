@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 
 
 @Route(value = "/log", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
+
 public class BabylinTrackerView extends VerticalLayout {
 
     private BabylinTrackerRepo repo;
