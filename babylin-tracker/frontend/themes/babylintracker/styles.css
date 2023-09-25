@@ -1,1 +1,5 @@
 @import url('./main-layout.css');
+
+.custom-margin-button {
+    margin: 10px;
+}
