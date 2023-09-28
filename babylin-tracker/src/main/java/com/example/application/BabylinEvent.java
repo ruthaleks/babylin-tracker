@@ -13,16 +13,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ToString
-public class BabylinTracker {
+public class BabylinEvent {
     @Id
     @GeneratedValue
     private Long id;
-    private EventType eventType;
-    private LocalDateTime time;
+    private LocalDateTime eventTime;
 
-    public BabylinTracker(EventType type, LocalDateTime time) {
-        this.eventType = type;
-        this.time = time;
-    }
 }
 

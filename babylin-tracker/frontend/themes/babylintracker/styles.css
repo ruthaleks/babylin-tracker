@@ -3,3 +3,7 @@
 .custom-margin-button {
     margin: 10px;
 }
+.no-padding-layout {
+    padding: 0;
+    margin: 0;
+}

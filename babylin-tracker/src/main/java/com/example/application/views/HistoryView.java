@@ -1,9 +1,8 @@
 package com.example.application.views;
 
-import com.example.application.BabylinTracker;
+import com.example.application.BabylinEvent;
 import com.example.application.BabylinTrackerRepo;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -19,7 +18,7 @@ public class HistoryView extends VerticalLayout {
                 history
         );
     }
-    public static Component createHistoryField(BabylinTracker record) {
+    public static Component createHistoryField(BabylinEvent record) {
         return new Paragraph(record.toString());
     }
 
