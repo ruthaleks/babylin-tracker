@@ -23,17 +23,12 @@ import java.util.Locale;
 @RouteAlias(value = "", layout = MainLayout.class)
 
 public class BabylinTrackerView extends VerticalLayout {
-
     private final BabylinTrackerRepo repo;
     public BabylinTrackerView(BabylinTrackerRepo repo) {
         this.repo = repo;
-        var sleepButton = new Button("Sover");
-        var wakeUpButton = new Button("Vaknar");
-        var mealButton = new Button("Äter");
-
-        addButtonClickListener(sleepButton, EventType.SLEEP);
-        addButtonClickListener(wakeUpButton, EventType.WAKEUP);
-        addButtonClickListener(mealButton, EventType.MEAL);
+        Button sleepButton = createButton("Sover", EventType.SLEEP);
+        Button wakeUpButton = createButton("Vaknar", EventType.WAKEUP);
+        Button mealButton = createButton("Äter", EventType.MEAL);
 
         add(
                 sleepButton,
@@ -42,35 +37,32 @@ public class BabylinTrackerView extends VerticalLayout {
         );
     }
 
-    private void addButtonClickListener(Button button, EventType eventType){
-        var dateTimePickerPopup = dateTimePickerPopup(eventType);
+    /** A button that opens a popup dialog box enabling editing of the date and time
+     * before saving the event */
+    private Button createButton(String label, EventType eventType){
+        Button button = new Button(label);
+        var dateTimePickerPopup = createDialogPopup(eventType);
         button.addClickListener(click -> {
             dateTimePickerPopup.open();
         });
         dateTimePickerPopup.addDialogCloseActionListener(event -> dateTimePickerPopup.close());
+        return button;
     }
 
-    private Dialog dateTimePickerPopup(EventType eventType){
+    private Dialog createDialogPopup(EventType eventType) {
         Dialog dateTimePickerPopup = new Dialog();
         dateTimePickerPopup.setModal(true);
 
         VerticalLayout layout = new VerticalLayout();
         layout.addClassNames("no-padding-layout");
 
-        DateTimePicker dateTimePicker = new DateTimePicker("Välj dag och tid");
-        dateTimePicker.setValue(LocalDateTime.now());
-        dateTimePicker.setStep(Duration.ofMinutes(30));
-        dateTimePicker.setLocale(Locale.UK); // to ensure 24h format
+        DateTimePicker dateTimePicker = createDateTimePicker();
+        Button saveButton = createSaveButton();
+
         layout.add(dateTimePicker);
-
-        Button saveButton = new Button("Spara");
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        saveButton.addClassName("custom-margin-button");
-
         dateTimePickerPopup.add(dateTimePicker, saveButton);
 
-        var amountField = new NumberField("Mängd (ml)");
-        amountField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_CENTER);
+        NumberField amountField = createAmountField();
         if (eventType == EventType.MEAL) {
             layout.add(amountField);
         }
@@ -78,14 +70,36 @@ public class BabylinTrackerView extends VerticalLayout {
         saveButton.addClickListener(click -> {
             var event = BabylinEventService.createEventByType(eventType);
             event.setEventTime(dateTimePicker.getValue());
-            if (amountField.getValue() != null)
+            if (amountField.getValue() != null) {
                 ((MealEvent) event).setAmount(amountField.getValue());
+            }
             repo.save(event);
             dateTimePickerPopup.close();
         });
 
         dateTimePickerPopup.add(layout);
+
         return dateTimePickerPopup;
     }
 
+    private DateTimePicker createDateTimePicker() {
+        DateTimePicker dateTimePicker = new DateTimePicker("Välj dag och tid");
+        dateTimePicker.setValue(LocalDateTime.now());
+        dateTimePicker.setStep(Duration.ofMinutes(30));
+        dateTimePicker.setLocale(Locale.UK); // to ensure 24h format
+        return dateTimePicker;
+    }
+
+    private Button createSaveButton() {
+        Button saveButton = new Button("Spara");
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        saveButton.addClassName("custom-margin-button");
+        return saveButton;
+    }
+
+    private NumberField createAmountField() {
+        var amountField = new NumberField("Mängd (ml)");
+        amountField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_CENTER);
+        return amountField;
+    }
 }
